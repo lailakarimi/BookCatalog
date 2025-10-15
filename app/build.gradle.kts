@@ -25,6 +25,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -32,12 +33,23 @@ android {
 }
 
 dependencies {
-
+    // Existing dependencies
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    // ROOM Database dependencies
+    implementation("androidx.room:room-runtime:2.5.2")
+    annotationProcessor("androidx.room:room-compiler:2.5.2") // works with Java
+
+    // Lifecycle / LiveData for ViewModel
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+
+    // RecyclerView
+    implementation("androidx.recyclerview:recyclerview:1.3.1")
 }

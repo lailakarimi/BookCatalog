@@ -1,33 +1,31 @@
 package com.example.bookcatalog.viewmodel;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import android.app.Application;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+
+import com.example.bookcatalog.dao.BookDao;
+import com.example.bookcatalog.database.BookDatabase;
 import com.example.bookcatalog.model.Book;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
 
-/**
- * ViewModel that provides book data to the UI.
- */
-public class BookViewModel extends ViewModel {
-    private final MutableLiveData<List<Book>> bookList = new MutableLiveData<>();
+public class BookViewModel extends AndroidViewModel {
 
-    public BookViewModel() {
-        loadBooks();
+    private BookDao bookDao;
+    public LiveData<List<Book>> allBooks;
+
+    public BookViewModel(@NonNull Application application) {
+        super(application);
+        BookDatabase db = BookDatabase.getInstance(application);
+        bookDao = db.bookDao();
+        allBooks = bookDao.getAllBooks();
     }
 
-    private void loadBooks() {
-        List<Book> books = new ArrayList<>();
-        books.add(new Book("The Great Gatsby", "F. Scott Fitzgerald", 4.3f));
-        books.add(new Book("1984", "George Orwell", 4.6f));
-        books.add(new Book("To Kill a Mockingbird", "Harper Lee", 4.7f));
-        bookList.setValue(books);
-    }
-
-    public LiveData<List<Book>> getBooks() {
-        return bookList;
+    public void insert(Book book) {
+        Executors.newSingleThreadExecutor().execute(() -> bookDao.insert(book));
     }
 }

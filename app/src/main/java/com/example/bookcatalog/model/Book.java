@@ -1,22 +1,19 @@
 package com.example.bookcatalog.model;
 
-/**
- * Model class representing a Book.
- */
-public class Book {
-    private String title;
-    private String author;
-    private float rating;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-    public Book(String title, String author, float rating) {
+@Entity(tableName = "books")
+public class Book {
+
+    @PrimaryKey(autoGenerate = true)
+    public int id;
+
+    public String title;
+    public String author;
+
+    public Book(String title, String author) {
         this.title = title;
         this.author = author;
-        this.rating = rating;
     }
-
-    public String getTitle() { return title; }
-
-    public String getAuthor() { return author; }
-
-    public float getRating() { return rating; }
 }
